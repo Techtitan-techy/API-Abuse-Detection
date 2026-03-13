@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Abuse Detection System</title>
+    <meta
+      name="description"
+      content="Real-time API security dashboard using AI and rule-based detection. Monitor threats, analyze traffic, and protect your APIs."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Particle Background -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Top Nav -->
+    <nav class="navbar">
+      <div class="nav-brand">
+        <div class="brand-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-label">SECURITY — AI</span>
+          <span class="brand-name">API Shield</span>
+        </div>
+      </div>
+      <div class="nav-status">
+        <div class="status-dot active"></div>
+        <span class="status-text">System Operational</span>
+      </div>
+      <!-- Tab Switcher -->
+      <div class="tab-switcher">
+        <button class="tab-btn active" id="tab-live" data-tab="live">
+          Live Simulation
+        </button>
+        <button class="tab-btn" id="tab-dataset" data-tab="dataset">
+          Dataset Test
+        </button>
+      </div>
+      <div class="nav-actions">
+        <button
+          class="btn-icon"
+          id="btn-simulate"
+          title="Run / Stop Simulation"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polygon points="5 3 19 12 5 21 5 3" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-eyebrow">BACKEND — SECURITY INFRASTRUCTURE</div>
+      <h1 class="hero-title">API Abuse Detection</h1>
+      <p class="hero-subtitle">
+        three layers · rule · statistical · ml ensemble · &lt;50ms latency
+      </p>
+      <div class="hero-badges">
+        <span class="badge badge-green" id="badge-precision"
+          >Precision: 90%</span
+        >
+        <span class="badge badge-blue" id="badge-latency"
+          >Latency &lt;50ms</span
+        >
+        <span class="badge badge-red" id="badge-threats"
+          >Threats Blocked: 0</span
+        >
+      </div>
+    </section>
+
+    <!-- Live Request Visualizer -->
+    <section class="pipeline-section">
+      <div class="pipeline-header">
+        <span class="section-label">PIPELINE STAGES</span>
+        <div class="request-badge" id="request-method-badge">
+          <span class="method-pill" id="method-display">GET</span>
+          <span id="endpoint-display">/api/products</span>
+          <span class="token-badge" id="token-display">token ✓</span>
+        </div>
+      </div>
+
+      <div class="pipeline-card">
+        <!-- Flow Diagram -->
+        <div class="flow-diagram">
+          <div class="flow-node client-node">
+            <div class="node-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="2" y="3" width="20" height="14" rx="2" />
+                <path d="M8 21h8M12 17v4" />
+              </svg>
+            </div>
+            <span class="node-label">client</span>
+          </div>
+
+          <div class="flow-arrow">
+            <svg viewBox="0 0 80 20" fill="none">
+              <path
+                d="M0 10 L65 10"
+                stroke="url(#arrow-grad)"
+                stroke-width="2"
+              />
+              <polygon points="60,6 70,10 60,14" fill="#6c63ff" />
+              <defs>
+                <linearGradient id="arrow-grad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#6c63ff" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#6c63ff" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="packet" id="packet1"></div>
+          </div>
+
+          <!-- Detection Engine Box -->
+          <div class="engine-box" id="engine-box">
+            <div class="engine-title">DETECTION ENGINE</div>
+            <div class="engine-layers">
+              <div class="layer-chip" id="layer-rules">
+                <div class="chip-icon">
+                  <svg viewBox="0 0 16 16" fill="currentColor">
+                    <path
+                      d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm3.5 5.5l-4 4a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7 9.293l3.646-3.647a.5.5 0 0 1 .708.708z"
+                    />
+                  </svg>
+                </div>
+                <span>Rules</span>
+              </div>
+              <div class="layer-chip" id="layer-stat">
+                <div class="chip-icon stat">
+                  <svg viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5h-2v12h2V2z" />
+                  </svg>
+                </div>
+                <span>Statistical</span>
+              </div>
+              <div class="layer-chip" id="layer-ml">
+                <div class="chip-icon ml">
+                  <svg viewBox="0 0 16 16" fill="currentColor">
+                    <path
+                      d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zM3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.58 26.58 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.933.933 0 0 1-.765.935c-.845.147-2.34.346-4.235.346-1.895 0-3.39-.2-4.235-.346A.933.933 0 0 1 3 9.219V8.062z"
+                    />
+                  </svg>
+                </div>
+                <span>ML</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-arrow">
+            <svg viewBox="0 0 80 20" fill="none">
+              <path
+                d="M0 10 L65 10"
+                stroke="url(#arrow-grad2)"
+                stroke-width="2"
+              />
+              <polygon points="60,6 70,10 60,14" fill="#00d4aa" />
+              <defs>
+                <linearGradient id="arrow-grad2" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#00d4aa" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#00d4aa" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="packet green" id="packet2"></div>
+          </div>
+
+          <!-- Services -->
+          <div class="services-list">
+            <div class="service-item" id="svc-allow">
+              <div class="service-dot allow"></div>
+              <span>allow</span>
+            </div>
+            <div class="service-item" id="svc-ratelimit">
+              <div class="service-dot ratelimit"></div>
+              <span>rate-limit</span>
+            </div>
+            <div class="service-item" id="svc-block">
+              <div class="service-dot block"></div>
+              <span>block</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Result Banner -->
+        <div class="result-banner" id="result-banner">
+          <div class="result-indicator" id="result-indicator">
+            <div class="pulse-ring"></div>
+            <div class="result-dot" id="result-dot"></div>
+          </div>
+          <div class="result-details">
+            <span class="result-text" id="result-text"
+              >ready — awaiting requests</span
+            >
+            <span class="result-meta" id="result-meta">system ready</span>
+          </div>
+          <div class="result-verdict" id="result-verdict">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pipeline Stages Detail -->
+    <section class="stages-section">
+      <div class="stages-label">DETECTION LAYERS</div>
+      <div class="stages-list">
+        <div class="stage-row" id="stage-rules">
+          <div class="stage-check" id="check-rules">
+            <svg viewBox="0 0 16 16" fill="currentColor">
+              <path
+                d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"
+              />
+            </svg>
+          </div>
+          <div class="stage-info">
+            <div class="stage-name">Rule-Based Detection</div>
+            <div class="stage-desc">
+              Blacklist · Rate limit · Bot signatures · IP reputation
+            </div>
+          </div>
+          <div class="stage-timing">&lt;2ms</div>
+          <div class="stage-result" id="result-rules">—</div>
+        </div>
+
+        <div class="stage-row" id="stage-stat">
+          <div class="stage-check pending" id="check-stat">
+            <svg viewBox="0 0 16 16" fill="currentColor">
+              <path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5h-2v12h2V2z" />
+            </svg>
+          </div>
+          <div class="stage-info">
+            <div class="stage-name">Statistical Analysis</div>
+            <div class="stage-desc">
+              EWMA · Isolation Forest · Behavioral anomalies
+            </div>
+          </div>
+          <div class="stage-timing">5-10ms</div>
+          <div class="stage-result" id="result-stat">—</div>
+        </div>
+
+        <div class="stage-row" id="stage-ml">
+          <div class="stage-check pending" id="check-ml">
+            <svg viewBox="0 0 16 16" fill="currentColor">
+              <circle cx="8" cy="8" r="5" />
+            </svg>
+          </div>
+          <div class="stage-info">
+            <div class="stage-name">ML Ensemble</div>
+            <div class="stage-desc">
+              XGBoost (50%) · LSTM (30%) · Autoencoder (20%)
+            </div>
+          </div>
+          <div class="stage-timing">15-25ms</div>
+          <div class="stage-result" id="result-ml">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HTTP Status Codes + Stats Row -->
+    <div class="bottom-row">
+      <!-- Response Codes -->
+      <div class="response-codes">
+        <div class="code-item" id="code-200">
+          <div class="code-num green-text">200</div>
+          <div class="code-label">allowed</div>
+          <div class="code-count" id="count-200">0</div>
+        </div>
+        <div class="code-item" id="code-429">
+          <div class="code-num yellow-text">429</div>
+          <div class="code-label">rate limited</div>
+          <div class="code-count" id="count-429">0</div>
+        </div>
+        <div class="code-item" id="code-403">
+          <div class="code-num orange-text">403</div>
+          <div class="code-label">blocked</div>
+          <div class="code-count" id="count-403">0</div>
+        </div>
+        <div class="code-item active" id="code-503">
+          <div class="code-num red-text">503</div>
+          <div class="code-label">attack</div>
+          <div class="code-count" id="count-503">0</div>
+        </div>
+      </div>
+
+      <!-- Live Metrics -->
+      <div class="metrics-panel">
+        <div class="metric-card">
+          <div class="metric-value" id="metric-total">0</div>
+          <div class="metric-label">Total Requests</div>
+          <div class="metric-bar">
+            <div class="metric-fill" id="fill-total"></div>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value highlight-yellow" id="metric-rps">0</div>
+          <div class="metric-label">Req / sec</div>
+          <div class="metric-bar">
+            <div class="metric-fill yellow" id="fill-rps"></div>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value highlight-red" id="metric-attacks">0</div>
+          <div class="metric-label">Attacks Caught</div>
+          <div class="metric-bar">
+            <div class="metric-fill red" id="fill-attacks"></div>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value highlight-green" id="metric-precision">
+            90%
+          </div>
+          <div class="metric-label">Precision</div>
+          <div class="metric-bar">
+            <div
+              class="metric-fill green"
+              id="fill-precision"
+              style="width: 90%"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Log Feed -->
+    <section class="log-section">
+      <div class="log-header">
+        <span class="section-label">LIVE REQUEST LOG</span>
+        <div class="log-controls">
+          <span class="log-count" id="log-count">0 events</span>
+          <button class="btn-clear" id="btn-clear">Clear</button>
+        </div>
+      </div>
+      <div class="log-feed" id="log-feed">
+        <div class="log-empty">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <path
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+          <p>Hit <strong>▶ Run</strong> to start the simulation</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Simulation Control Bar -->
+    <div class="sim-controls" id="sim-controls">
+      <div class="sim-inner">
+        <button class="sim-btn active" id="sim-normal" data-mode="normal">
+          Normal Traffic
+        </button>
+        <button class="sim-btn" id="sim-attack" data-mode="attack">
+          Under Attack
+        </button>
+        <button class="sim-btn" id="sim-ddos" data-mode="ddos">
+          DDoS Storm
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  DATASET TEST PANEL                                     -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="dataset-panel" class="dataset-panel hidden">
+      <!-- Upload / Sample Area -->
+      <section class="ds-section">
+        <div class="ds-header">
+          <span class="section-label"
+            >DATASET TEST — STEP-BY-STEP ANALYSIS</span
+          >
+          <span class="ds-hint"
+            >Upload a CSV or use the built-in sample dataset</span
+          >
+        </div>
+
+        <div class="ds-upload-row">
+          <!-- Drop Zone -->
+          <label class="drop-zone" id="drop-zone" for="csv-file-input">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <path
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+              />
+            </svg>
+            <span class="drop-title">Drop CSV file here</span>
+            <span class="drop-sub"
+              >or click to browse · columns: user_id, ip, endpoint, method,
+              is_attack</span
+            >
+            <input
+              type="file"
+              id="csv-file-input"
+              accept=".csv"
+              style="display: none"
+            />
+          </label>
+
+          <div class="ds-divider"><span>or</span></div>
+
+          <!-- Sample Dataset Buttons -->
+          <div class="ds-samples">
+            <p class="ds-samples-title">Built-in Samples</p>
+            <button class="sample-btn" id="sample-normal" data-sample="normal">
+              <span class="sample-icon">📊</span>
+              <span class="sample-info">
+                <strong>Normal Traffic</strong>
+                <small>100 rows · ~4% attacks</small>
+              </span>
+            </button>
+            <button class="sample-btn" id="sample-attack" data-sample="attack">
+              <span class="sample-icon">⚠️</span>
+              <span class="sample-info">
+                <strong>Under Attack</strong>
+                <small>100 rows · ~30% attacks</small>
+              </span>
+            </button>
+            <button class="sample-btn" id="sample-mixed" data-sample="mixed">
+              <span class="sample-icon">🔀</span>
+              <span class="sample-info">
+                <strong>Mixed Scenario</strong>
+                <small>150 rows · escalating threat</small>
+              </span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dataset Info Bar -->
+      <div class="ds-info-bar" id="ds-info-bar" style="display: none">
+        <div class="ds-info-item">
+          <span class="ds-info-label">Dataset</span>
+          <span class="ds-info-val" id="ds-name">—</span>
+        </div>
+        <div class="ds-info-item">
+          <span class="ds-info-label">Total Rows</span>
+          <span class="ds-info-val" id="ds-total">—</span>
+        </div>
+        <div class="ds-info-item">
+          <span class="ds-info-label">Ground Truth Attacks</span>
+          <span class="ds-info-val highlight-red" id="ds-gt-attacks">—</span>
+        </div>
+        <div class="ds-info-item">
+          <span class="ds-info-label">Progress</span>
+          <span class="ds-info-val" id="ds-progress-text">0 / 0</span>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="ds-progress-wrap">
+          <div class="ds-progress-track">
+            <div class="ds-progress-fill" id="ds-progress-fill"></div>
+          </div>
+          <span class="ds-progress-pct" id="ds-progress-pct">0%</span>
+        </div>
+      </div>
+
+      <!-- Playback Controls -->
+      <div class="ds-controls" id="ds-controls" style="display: none">
+        <div class="ds-ctrl-left">
+          <button class="ds-btn ds-btn-play" id="ds-btn-play" disabled>
+            <svg viewBox="0 0 16 16" fill="currentColor">
+              <polygon points="3 2 13 8 3 14" />
+            </svg>
+            Play All
+          </button>
+          <button class="ds-btn" id="ds-btn-step" disabled>
+            <svg viewBox="0 0 16 16" fill="currentColor">
+              <polygon points="3 2 10 8 3 14" />
+              <rect x="11" y="2" width="2" height="12" />
+            </svg>
+            Step
+          </button>
+          <button class="ds-btn ds-btn-stop" id="ds-btn-stop" disabled>
+            <svg viewBox="0 0 16 16" fill="currentColor">
+              <rect x="3" y="3" width="10" height="10" />
+            </svg>
+            Stop
+          </button>
+          <button class="ds-btn ds-btn-reset" id="ds-btn-reset">
+            <svg
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <path d="M1.5 4.5A7 7 0 1 1 3 11" />
+              <polyline points="1 1 1 5 5 5" />
+            </svg>
+            Reset
+          </button>
+        </div>
+        <div class="ds-ctrl-right">
+          <label class="speed-label">Speed</label>
+          <div class="speed-options">
+            <button class="speed-btn" data-speed="1500">0.5×</button>
+            <button class="speed-btn active" data-speed="800">1×</button>
+            <button class="speed-btn" data-speed="400">2×</button>
+            <button class="speed-btn" data-speed="150">5×</button>
+            <button class="speed-btn" data-speed="30">Max</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Cards (shown after completion) -->
+      <div class="ds-summary" id="ds-summary" style="display: none">
+        <div class="summary-header">
+          <span class="section-label">TEST RESULTS — CONFUSION MATRIX</span>
+          <button class="btn-clear" id="ds-export-btn">Export CSV</button>
+        </div>
+        <div class="summary-cards">
+          <div class="sum-card green">
+            <div class="sum-val" id="sum-tp">0</div>
+            <div class="sum-lbl">True Positives</div>
+            <div class="sum-sub">Attack correctly blocked</div>
+          </div>
+          <div class="sum-card red">
+            <div class="sum-val" id="sum-fn">0</div>
+            <div class="sum-lbl">False Negatives</div>
+            <div class="sum-sub">Attack missed (allowed)</div>
+          </div>
+          <div class="sum-card yellow">
+            <div class="sum-val" id="sum-fp">0</div>
+            <div class="sum-lbl">False Positives</div>
+            <div class="sum-sub">Normal blocked by mistake</div>
+          </div>
+          <div class="sum-card blue">
+            <div class="sum-val" id="sum-tn">0</div>
+            <div class="sum-lbl">True Negatives</div>
+            <div class="sum-sub">Normal correctly allowed</div>
+          </div>
+        </div>
+        <div class="summary-metrics">
+          <div class="smet">
+            <span class="smet-label">Precision</span>
+            <div class="smet-bar-wrap">
+              <div class="smet-bar green" id="bar-precision"></div>
+            </div>
+            <span class="smet-val" id="val-precision">—</span>
+          </div>
+          <div class="smet">
+            <span class="smet-label">Recall</span>
+            <div class="smet-bar-wrap">
+              <div class="smet-bar blue" id="bar-recall"></div>
+            </div>
+            <span class="smet-val" id="val-recall">—</span>
+          </div>
+          <div class="smet">
+            <span class="smet-label">F1 Score</span>
+            <div class="smet-bar-wrap">
+              <div class="smet-bar yellow" id="bar-f1"></div>
+            </div>
+            <span class="smet-val" id="val-f1">—</span>
+          </div>
+          <div class="smet">
+            <span class="smet-label">False Positive Rate</span>
+            <div class="smet-bar-wrap">
+              <div class="smet-bar red" id="bar-fpr"></div>
+            </div>
+            <span class="smet-val" id="val-fpr">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Table -->
+      <div class="ds-table-wrap" id="ds-table-wrap" style="display: none">
+        <div class="ds-table-header">
+          <span class="section-label">ROW-BY-ROW RESULTS</span>
+          <div class="ds-table-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="allow">Allowed</button>
+            <button class="filter-btn" data-filter="rate_limit">
+              Rate Limited
+            </button>
+            <button class="filter-btn" data-filter="block">Blocked</button>
+            <button class="filter-btn" data-filter="fp">False +</button>
+            <button class="filter-btn" data-filter="fn">False −</button>
+          </div>
+        </div>
+        <div class="ds-table-scroll">
+          <table class="ds-table" id="ds-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>IP</th>
+                <th>Endpoint</th>
+                <th>Method</th>
+                <th>Ground Truth</th>
+                <th>Decision</th>
+                <th>Layer</th>
+                <th>Confidence</th>
+                <th>Latency</th>
+                <th>Outcome</th>
+              </tr>
+            </thead>
+            <tbody id="ds-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- /dataset-panel -->
+
+    <script src="app.js"></script>
+  </body>
+</html>

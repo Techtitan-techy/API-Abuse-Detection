@@ -1,0 +1,83 @@
+{
+  "timestamp": "20260219_213411",
+  "datasets": {
+    "Dataset 1 (1% attacks)": {
+      "confusion_matrix": {
+        "TP": 1,
+        "FP": 0,
+        "TN": 19,
+        "FN": 0
+      },
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "fpr": 0.0,
+      "accuracy": 1.0,
+      "latency": {
+        "avg_ms": 15.36,
+        "p50_ms": 16.3,
+        "p95_ms": 19.58,
+        "p99_ms": 20.4
+      },
+      "total_predictions": 20,
+      "latency_stats": {
+        "average": 15.36,
+        "median": 16.3,
+        "p95": 19.58,
+        "p99": 20.4
+      }
+    },
+    "Dataset 2 (10% attacks)": {
+      "confusion_matrix": {
+        "TP": 3,
+        "FP": 0,
+        "TN": 27,
+        "FN": 0
+      },
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "fpr": 0.0,
+      "accuracy": 1.0,
+      "latency": {
+        "avg_ms": 14.62,
+        "p50_ms": 14.3,
+        "p95_ms": 21.81,
+        "p99_ms": 23.25
+      },
+      "total_predictions": 30,
+      "latency_stats": {
+        "average": 14.62,
+        "median": 14.3,
+        "p95": 21.81,
+        "p99": 23.25
+      }
+    },
+    "Dataset 3 (25% attacks)": {
+      "confusion_matrix": {
+        "TP": 5,
+        "FP": 0,
+        "TN": 19,
+        "FN": 1
+      },
+      "precision": 1.0,
+      "recall": 0.8333,
+      "f1_score": 0.9091,
+      "fpr": 0.0,
+      "accuracy": 0.96,
+      "latency": {
+        "avg_ms": 13.95,
+        "p50_ms": 14.36,
+        "p95_ms": 18.96,
+        "p99_ms": 20.63
+      },
+      "total_predictions": 25,
+      "latency_stats": {
+        "average": 13.95,
+        "median": 14.36,
+        "p95": 18.96,
+        "p99": 20.63
+      }
+    }
+  }
+}
