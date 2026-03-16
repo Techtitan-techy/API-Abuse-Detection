@@ -90,7 +90,7 @@ class LSTMDetector(nn.Module):
 
 
 class AutoencoderDetector(nn.Module):
-    def __init__(self, input_dim=20, encoding_dim=10):
+    def __init__(self, input_dim=21, encoding_dim=10):
         super(AutoencoderDetector, self).__init__()
         self.encoder = nn.Sequential(
             nn.Linear(input_dim, 20),

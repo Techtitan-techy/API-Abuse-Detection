@@ -4,10 +4,17 @@ from typing import Dict, Optional
 import time
 from datetime import datetime
 
+from fastapi.staticfiles import StaticFiles
 from features import FeatureExtractor
 from models import RuleBasedDetector, StatisticalDetector, MLEnsembleDetector
+import os
 
 app = FastAPI(title="API Abuse Detection System", version="1.0.0")
+
+# Mount the dashboard directory to serve the frontend
+dashboard_path = os.path.join(os.path.dirname(__file__), "dashboard")
+if os.path.exists(dashboard_path):
+    app.mount("/dashboard", StaticFiles(directory=dashboard_path, html=True), name="dashboard")
 
 feature_extractor = FeatureExtractor()
 rule_detector = RuleBasedDetector()

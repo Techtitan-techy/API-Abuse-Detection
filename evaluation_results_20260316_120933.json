@@ -1,7 +1,7 @@
 {
-  "timestamp": "20260219_213411",
+  "timestamp": "20260316_120933",
   "datasets": {
-    "Dataset 1 (1% attacks)": {
+    "Dataset 1 (10% attacks)": {
       "confusion_matrix": {
         "TP": 1,
         "FP": 0,
@@ -14,20 +14,20 @@
       "fpr": 0.0,
       "accuracy": 1.0,
       "latency": {
-        "avg_ms": 15.36,
-        "p50_ms": 16.3,
-        "p95_ms": 19.58,
-        "p99_ms": 20.4
+        "avg_ms": 8.65,
+        "p50_ms": 8.3,
+        "p95_ms": 14.09,
+        "p99_ms": 16.5
       },
       "total_predictions": 20,
       "latency_stats": {
-        "average": 15.36,
-        "median": 16.3,
-        "p95": 19.58,
-        "p99": 20.4
+        "average": 8.65,
+        "median": 8.3,
+        "p95": 14.09,
+        "p99": 16.5
       }
     },
-    "Dataset 2 (10% attacks)": {
+    "Dataset 2 (15% attacks)": {
       "confusion_matrix": {
         "TP": 3,
         "FP": 0,
@@ -40,20 +40,20 @@
       "fpr": 0.0,
       "accuracy": 1.0,
       "latency": {
-        "avg_ms": 14.62,
-        "p50_ms": 14.3,
-        "p95_ms": 21.81,
-        "p99_ms": 23.25
+        "avg_ms": 9.4,
+        "p50_ms": 9.25,
+        "p95_ms": 17.74,
+        "p99_ms": 18.54
       },
       "total_predictions": 30,
       "latency_stats": {
-        "average": 14.62,
-        "median": 14.3,
-        "p95": 21.81,
-        "p99": 23.25
+        "average": 9.4,
+        "median": 9.25,
+        "p95": 17.74,
+        "p99": 18.54
       }
     },
-    "Dataset 3 (25% attacks)": {
+    "Dataset 3 (30% attacks)": {
       "confusion_matrix": {
         "TP": 5,
         "FP": 0,
@@ -66,17 +66,17 @@
       "fpr": 0.0,
       "accuracy": 0.96,
       "latency": {
-        "avg_ms": 13.95,
-        "p50_ms": 14.36,
-        "p95_ms": 18.96,
-        "p99_ms": 20.63
+        "avg_ms": 9.44,
+        "p50_ms": 8.15,
+        "p95_ms": 17.04,
+        "p99_ms": 18.64
       },
       "total_predictions": 25,
       "latency_stats": {
-        "average": 13.95,
-        "median": 14.36,
-        "p95": 18.96,
-        "p99": 20.63
+        "average": 9.44,
+        "median": 8.15,
+        "p95": 17.04,
+        "p99": 18.64
       }
     }
   }
