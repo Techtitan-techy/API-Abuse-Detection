@@ -90,7 +90,7 @@ class LSTMDetector(nn.Module):
 
 
 class AutoencoderDetector(nn.Module):
-    def __init__(self, input_dim=21, encoding_dim=10):
+    def __init__(self, input_dim=20, encoding_dim=10):
         super(AutoencoderDetector, self).__init__()
         self.encoder = nn.Sequential(
             nn.Linear(input_dim, 20),
@@ -152,10 +152,14 @@ class MLEnsembleDetector:
         self.weights = config.ENSEMBLE_WEIGHTS
 
     def detect(self, features: np.ndarray, sequence_features: np.ndarray) -> Dict:
+        # Slice features to 20 to match pre-trained model dimensions if necessary
+        # The current feature extractor produces 21 features, but models were trained on 20
+        features_20 = features[:20]
+        
         scores = {
-            'xgboost': self.xgboost.predict_proba(features),
+            'xgboost': self.xgboost.predict_proba(features_20),
             'lstm': self.lstm.predict_proba(sequence_features),
-            'autoencoder': self.autoencoder.predict_proba(features)
+            'autoencoder': self.autoencoder.predict_proba(features_20)
         }
 
         ensemble_score = sum(scores[k] * self.weights[k] for k in scores)
@@ -203,7 +207,8 @@ class MLEnsembleDetector:
             self.autoencoder.trained = True
             print("Models loaded successfully")
         except Exception as e:
-            print(f"Could not load models: {e}")
+            print(f"Error loading models: {e}")
+            raise e
 
     def get_statistics(self) -> Dict:
         return {
