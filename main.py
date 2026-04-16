@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Dict, Optional
 import time
@@ -10,6 +11,15 @@ from models import RuleBasedDetector, StatisticalDetector, MLEnsembleDetector
 import os
 
 app = FastAPI(title="API Abuse Detection System", version="1.0.0")
+
+# Allow requests from your frontend websites
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # In production, replace "*" with your E-Health site URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Mount the dashboard directory to serve the frontend
 dashboard_path = os.path.join(os.path.dirname(__file__), "dashboard")
@@ -35,6 +45,7 @@ class APIRequest(BaseModel):
     status_code: int = 200
     user_agent: str = ""
     params: Optional[Dict] = None
+    body: Optional[str] = ""
     geolocation: Optional[Dict] = None
     timestamp: Optional[float] = None
 
@@ -67,6 +78,7 @@ async def detect_abuse(request: APIRequest):
         'status_code': request.status_code,
         'user_agent': request.user_agent,
         'params': request.params or {},
+        'body': request.body or '',
         'geolocation': request.geolocation,
         'timestamp': request.timestamp or time.time()
     }
@@ -90,7 +102,7 @@ async def detect_abuse(request: APIRequest):
         )
 
     feature_array = feature_extractor.normalize_features(features)
-    stat_result = statistical_detector.detect(request.user_id, feature_array)
+    stat_result = statistical_detector.detect(request.user_id, feature_array, features)
 
     if stat_result['is_anomaly'] and stat_result['anomaly_score'] > 0.75:
         latency_ms = (time.time() - start_time) * 1000
